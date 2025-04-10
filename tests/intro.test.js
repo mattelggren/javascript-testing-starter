@@ -1,5 +1,5 @@
 import { describe, test, it, expect } from "vitest";
-import { max, fizzBuzz, calculateAverage, factorial } from "../src/intro.js";
+import { max, fizzBuzz, calculateAverage, factorial } from "../src/intro";
 
 describe('max', () => {
     it('should return the first argument if it is greater', () => {
