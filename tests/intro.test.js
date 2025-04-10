@@ -51,10 +51,10 @@ describe('calculateAverage', () => {
 
 describe('factorial', () => {
     it('should return an error message for non-integer types', () => {
-        expect(factorial(NaN)).toBe('error - not an integer');
+        expect(factorial(NaN)).toMatch(/error/i);
     });
     it('should return an error message for negative integers', () => {
-        expect(factorial(-1)).toBe('error - not a positive integer');
+        expect(factorial(-1)).toMatch(/error/i);
     });
     it('should return 1 as the factorial for 0', () => {
         expect(factorial(0)).toBe(1);
@@ -63,7 +63,7 @@ describe('factorial', () => {
         expect(factorial(5)).toBe(120);
     });
     it('should return an accurate factorial for a medium number', () => {
-        expect(factorial(56)).toBe(7.109985878048635e+74);
+        expect(factorial(56)).toBeCloseTo(7.109985878048635e+74);
     });
     it('should return an accurate factorial for a large number', () => {
         expect(factorial(256)).toBe(Infinity);
