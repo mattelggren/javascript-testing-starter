@@ -1,8 +1,11 @@
 // Lesson: Writing your first tests
 export function max(a, b) {
+  /* Make this more concise
   if (a > b) return a;
   else if (b > a) return b;
   return a;
+  */
+ return a > b ? a : b;
 }
 
 // Exercise
