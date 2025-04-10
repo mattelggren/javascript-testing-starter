@@ -1,5 +1,5 @@
 import { describe, test, it, expect } from "vitest";
-import { max, fizzBuzz, calculateAverage } from "../src/intro.js";
+import { max, fizzBuzz, calculateAverage, factorial } from "../src/intro.js";
 
 describe('max', () => {
     it('should return the first argument if it is greater', () => {
@@ -46,5 +46,26 @@ describe('calculateAverage', () => {
     });
     it('should return average of an array with more than one element', () => {
         expect(calculateAverage([1, 2, 3, 4])).toBe(2.5);
+    });
+});
+
+describe('factorial', () => {
+    it('should return an error message for non-integer types', () => {
+        expect(factorial(NaN)).toBe('error - not an integer');
+    });
+    it('should return an error message for negative integers', () => {
+        expect(factorial(-1)).toBe('error - not a positive integer');
+    });
+    it('should return 1 as the factorial for 0', () => {
+        expect(factorial(0)).toBe(1);
+    });
+    it('should return an accurate factorial for a small number', () => {
+        expect(factorial(5)).toBe(120);
+    });
+    it('should return an accurate factorial for a medium number', () => {
+        expect(factorial(56)).toBe(7.109985878048635e+74);
+    });
+    it('should return an accurate factorial for a large number', () => {
+        expect(factorial(256)).toBe(Infinity);
     });
 });
