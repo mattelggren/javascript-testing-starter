@@ -1,5 +1,5 @@
 import { it, expect, describe } from 'vitest'
-import { calculateDiscount, getCoupons } from "../src/core";
+import { calculateDiscount, getCoupons, validateUserInput } from "../src/core";
 
 describe('getCoupons', () => {
     it('should return an array', () => {
@@ -41,5 +41,33 @@ describe('calculateDiscount', () => {
     });
     it('should handle invalid discount code', () => {
         expect(calculateDiscount(10.50, 'SAVE100')).toBe(10.50);
+    });
+});
+
+describe('validateUserInput', () => {
+    it('should return validation success if given valid input', () => {
+        expect(validateUserInput('unm', 18)).toMatch(/success/i);
+    });
+    it('should handle non-string user name input', () => {
+        expect(validateUserInput(0, 18)).toMatch(/invalid/i);
+    });
+    it('should handle user name input less than 3 characters', () => {
+        expect(validateUserInput('un', 18)).toMatch(/invalid/i);
+    });
+    it('should handle user name input greater than 20 characters', () => {
+        expect(validateUserInput('a'.repeat(21), 18)).toMatch(/invalid/i);
+    });
+    it('should handle non-numeric age input', () => {
+        expect(validateUserInput('unm', 'unm')).toMatch(/invalid/i);
+    });
+    it('should handle age input less than 18', () => {
+        expect(validateUserInput('unm', 17)).toMatch(/invalid/i);
+    });
+    it('should handle age input greater than 999', () => {
+        expect(validateUserInput('unm', 1000)).toMatch(/invalid/i);
+    });
+    it('should handle combined invalid username and age input', () => {
+        expect(validateUserInput('un', 17)).toMatch(/invalid user/i);
+        expect(validateUserInput('un', 17)).toMatch(/invalid age/i);
     });
 });
