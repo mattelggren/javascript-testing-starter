@@ -51,7 +51,11 @@ export function isValidUsername(username) {
   const minLength = 5;
   const maxLength = 15;
 
-  return username.length >= minLength && username.length <= maxLength;
+  if (typeof username !== 'string') {
+    return 'Invalid username';
+  } else {
+    return username.length >= minLength && username.length <= maxLength;
+  }
 }
 
 // Exercise: Boundary testing

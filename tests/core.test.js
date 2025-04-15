@@ -1,5 +1,5 @@
 import { it, expect, describe } from 'vitest'
-import { calculateDiscount, getCoupons, isPriceInRange, validateUserInput } from "../src/core";
+import { calculateDiscount, getCoupons, isPriceInRange, isValidUsername, validateUserInput } from "../src/core";
 
 describe('getCoupons', () => {
     it('should return an array', () => {
@@ -81,5 +81,21 @@ describe('isPriceInRange', () => {
     });
     it('should return false for price is greater than max', () => {
         expect(isPriceInRange(2.0, 1.99, 1.99)).toBe(false);
+    });
+});
+
+describe('isValidUsername', () => {
+    const minLength = 5;
+    const maxLength = 15;
+    it('should return true for username is on the min or max boundary', () => {
+        expect(isValidUsername('n'.repeat(minLength))).toBe(true);
+        expect(isValidUsername('n'.repeat(maxLength))).toBe(true);
+    });
+    it('should return false for username is outside the min or max boundary', () => {
+        expect(isValidUsername('n'.repeat(minLength - 1))).toBe(false);
+        expect(isValidUsername('n'.repeat(maxLength + 1))).toBe(false);
+    });
+    it('should handle non-string username inputs', () => {
+        expect(isValidUsername(null)).toMatch(/invalid/i);
     });
 });
