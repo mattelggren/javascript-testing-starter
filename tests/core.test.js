@@ -1,5 +1,5 @@
 import { it, expect, describe } from 'vitest'
-import { calculateDiscount, getCoupons, isPriceInRange, isValidUsername, validateUserInput } from "../src/core";
+import { calculateDiscount, canDrive, getCoupons, isPriceInRange, isValidUsername, validateUserInput } from "../src/core";
 
 describe('getCoupons', () => {
     it('should return an array', () => {
@@ -97,5 +97,26 @@ describe('isValidUsername', () => {
     });
     it('should handle non-string username inputs', () => {
         expect(isValidUsername(null)).toMatch(/invalid/i);
+    });
+});
+
+describe('canDrive', () => {
+    const minUS = 16;
+    const minUK = 17;
+    it('should return true for age and countryCode at min boundary', () => {
+        expect(canDrive(minUS, 'US')).toBe(true);
+        expect(canDrive(minUK, 'UK')).toBe(true);
+        // TODO: add max boundary
+    });
+    it('should return true for age and countryCode above min boundary', () => {
+        expect(canDrive(minUS +1, 'US')).toBe(true);
+        expect(canDrive(minUK +1, 'UK')).toBe(true);
+    });
+    it('should return false for age and countryCode less than min boundary', () => {
+        expect(canDrive(minUS -1, 'US')).toBe(false);
+        expect(canDrive(minUK -1, 'UK')).toBe(false);
+    });
+    it('should handle invalid countryCode input', () => {
+        expect(canDrive(minUS, null)).toMatch(/invalid/i);
     });
 });
