@@ -103,20 +103,18 @@ describe('isValidUsername', () => {
 describe('canDrive', () => {
     const minUS = 16;
     const minUK = 17;
-    it('should return true for age and countryCode at min boundary', () => {
-        expect(canDrive(minUS, 'US')).toBe(true);
-        expect(canDrive(minUK, 'UK')).toBe(true);
-        // TODO: add max boundary
-    });
-    it('should return true for age and countryCode above min boundary', () => {
-        expect(canDrive(minUS +1, 'US')).toBe(true);
-        expect(canDrive(minUK +1, 'UK')).toBe(true);
-    });
-    it('should return false for age and countryCode less than min boundary', () => {
-        expect(canDrive(minUS -1, 'US')).toBe(false);
-        expect(canDrive(minUK -1, 'UK')).toBe(false);
-    });
+
     it('should handle invalid countryCode input', () => {
         expect(canDrive(minUS, null)).toMatch(/invalid/i);
+    });
+    it.each([
+        { age: minUS, countryCode: 'US', result: true },
+        { age: minUS + 1, countryCode: 'US', result: true },
+        { age: minUS - 1, countryCode: 'US', result: false },
+        { age: minUK, countryCode: 'UK', result: true },
+        { age: minUK + 1, countryCode: 'UK', result: true },
+        { age: minUK - 1, countryCode: 'UK', result: false },
+    ])('should return $result for $age, $countryCode', ({ age, countryCode, result }) => {
+        expect(canDrive(age, countryCode)).toBe(result);
     });
 });
