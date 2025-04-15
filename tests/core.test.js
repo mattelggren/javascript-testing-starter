@@ -73,14 +73,17 @@ describe('validateUserInput', () => {
 });
 
 describe('isPriceInRange', () => {
-    it('should return true for price is on boundary min and max', () => {
-        expect(isPriceInRange(1.99, 1.99, 1.99)).toBe(true);
-    });
-    it('should return false for price is less than min', () => {
-        expect(isPriceInRange(1.98, 1.99, 1.99)).toBe(false);
-    });
-    it('should return false for price is greater than max', () => {
-        expect(isPriceInRange(2.0, 1.99, 1.99)).toBe(false);
+    const minPrice = 0.1;
+    const maxPrice = 1.0; // it's a dollar store!
+    it.each([
+        {scenario: 'price = min', price: minPrice, result: true},
+        {scenario: 'price > min', price: minPrice + 0.1, result: true},
+        {scenario: 'price < min', price: minPrice - 0.1, result: false},
+        {scenario: 'price = max', price: maxPrice, result: true},
+        {scenario: 'price < max', price: maxPrice - 0.1, result: true},
+        {scenario: 'price > max', price: maxPrice + 0.1, result: false},
+    ])('should return $result when $scenario', ({ price, result }) => {
+        expect(isPriceInRange(price, minPrice, maxPrice)).toBe(result);
     });
 });
 
