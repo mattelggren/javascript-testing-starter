@@ -1,5 +1,5 @@
 import { it, expect, describe } from 'vitest'
-import { calculateDiscount, canDrive, getCoupons, isPriceInRange, isValidUsername, validateUserInput } from "../src/core";
+import { calculateDiscount, canDrive, getCoupons, fetchData, fetchDataFailedPromise, isPriceInRange, isValidUsername, validateUserInput } from "../src/core";
 
 describe('getCoupons', () => {
     it('should return an array', () => {
@@ -73,15 +73,15 @@ describe('validateUserInput', () => {
 });
 
 describe('isPriceInRange', () => {
-    const minPrice = 0.1;
+    const minPrice = 0.01;
     const maxPrice = 1.0; // it's a dollar store!
     it.each([
         {scenario: 'price = min', price: minPrice, result: true},
-        {scenario: 'price > min', price: minPrice + 0.1, result: true},
-        {scenario: 'price < min', price: minPrice - 0.1, result: false},
+        {scenario: 'price > min', price: minPrice + 0.01, result: true},
+        {scenario: 'price < min', price: minPrice - 0.01, result: false},
         {scenario: 'price = max', price: maxPrice, result: true},
-        {scenario: 'price < max', price: maxPrice - 0.1, result: true},
-        {scenario: 'price > max', price: maxPrice + 0.1, result: false},
+        {scenario: 'price < max', price: maxPrice - 0.01, result: true},
+        {scenario: 'price > max', price: maxPrice + 0.01, result: false},
     ])('should return $result when $scenario', ({ price, result }) => {
         expect(isPriceInRange(price, minPrice, maxPrice)).toBe(result);
     });
@@ -119,5 +119,24 @@ describe('canDrive', () => {
         { age: minUK - 1, countryCode: 'UK', result: false },
     ])('should return $result for $age, $countryCode', ({ age, countryCode, result }) => {
         expect(canDrive(age, countryCode)).toBe(result);
+    });
+});
+
+describe('fetchData', () => {
+    it('should return a promise that will resolve to an array of numbers', async () => {
+        const result = await fetchData();
+        expect(Array.isArray(result)).toBe(true);
+        expect(result.length).toBeGreaterThan(0);
+    });
+});
+
+describe('fetchDataFailedPromise', () => {
+    it('should handle a failed promise', async () => {
+        try {
+            const result = await fetchDataFailedPromise();
+        } catch (error) {
+            expect(error).toHaveProperty('reason');
+            expect(error.reason).toMatch(/fail/i);
+        }
     });
 });

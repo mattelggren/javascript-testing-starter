@@ -82,6 +82,10 @@ export function fetchData() {
   });
 }
 
+export function fetchDataFailedPromise() {
+  return Promise.reject({reason: 'Operation failed'});
+}
+
 // Lesson: Setup and teardown
 export class Stack {
   constructor() {
