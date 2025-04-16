@@ -1,4 +1,4 @@
-import { it, expect, describe, beforeAll, beforeEach, afterAll, afterEach } from 'vitest'
+import { it, expect, describe, beforeEach } from 'vitest'
 import { calculateDiscount, canDrive, getCoupons, fetchData, fetchDataFailedPromise, 
     isPriceInRange, isValidUsername, Stack, validateUserInput } from "../src/core";
 
@@ -144,18 +144,8 @@ describe('fetchDataFailedPromise', () => {
 
 describe('Stack', () => {
     let stack;
-    beforeAll(() => {
-        console.log('called beforeAll');
-    });
     beforeEach(() => {
-        console.log('called beforeEach');
         stack = new Stack();
-    });
-    afterEach(() => {
-        console.log('called afterEach');
-    });
-    afterAll(() => {
-        console.log('called afterAll');
     });
 
     it('should initialize as a Stack instance', () => {
@@ -172,7 +162,7 @@ describe('Stack', () => {
     });
     it('should return an error for pop if the stack is empty', () => {
         expect(() => stack.pop()).toThrowError(/empty/i);
-    })
+    });
     it('should support peek at top of stack without removing it', () => {
         stack.push(1);
         stack.push(2);
