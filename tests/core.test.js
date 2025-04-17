@@ -146,7 +146,7 @@ describe('fetchData', () => {
 describe('fetchDataFailedPromise', () => {
   it('should handle a failed promise', async () => {
     try {
-      const result = await fetchDataFailedPromise();
+      await fetchDataFailedPromise();
     } catch (error) {
       expect(error).toHaveProperty('reason');
       expect(error.reason).toMatch(/fail/i);
