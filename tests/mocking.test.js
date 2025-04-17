@@ -1,5 +1,5 @@
 import { vi, it, expect, describe } from 'vitest'
-import { getPriceInCurrency, getShippingInfo, isOnline, login, renderPage, submitOrder, signUp } from '../src/mocking';
+import { getPriceInCurrency, getShippingInfo, isOnline, login, renderPage, submitOrder, signUp, getDiscount } from '../src/mocking';
 import { getExchangeRate } from '../src/libs/currency';
 import { getShippingQuote } from '../src/libs/shipping';
 import { trackPageView } from '../src/libs/analytics';
@@ -168,5 +168,20 @@ describe('isOnline', () => {
 
         vi.setSystemTime('2025-01-01 19:59');
         expect(isOnline()).toBe(true);
+    });
+});
+
+describe('getDiscount', () => {
+    it('should return 0 as discount if today is not Christmas Day', () => { 
+        vi.setSystemTime('2025-12-24 23:59');
+        expect(getDiscount()).toBe(0);
+        vi.setSystemTime('2025-12-26 00:01');
+        expect(getDiscount()).toBe(0);
+    });
+    it('should return 0.2 as discount if today is Christmas Day', () => {
+        vi.setSystemTime('2025-12-25 00:01');
+        expect(getDiscount()).toBe(.2);
+        vi.setSystemTime('2025-12-25 23:59');
+        expect(getDiscount()).toBe(.2);
     });
 });
