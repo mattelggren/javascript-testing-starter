@@ -5,7 +5,7 @@ export function max(a, b) {
   else if (b > a) return b;
   return a;
   */
- return a > b ? a : b;
+  return a > b ? a : b;
 }
 
 // Exercise
@@ -18,13 +18,16 @@ export function fizzBuzz(n) {
 
 export function calculateAverage(arr) {
   if (arr.length === 0) return NaN;
-  const sum = arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const sum = arr.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0,
+  );
   return sum / arr.length;
 }
 
 // the factorial of a n is the product of all positive numbers between 1 and n
 export function factorial(n) {
-  if (!Number.isInteger(n)) return "error - not an integer";
-  if (n < 0) return "error - not a positive integer";
-  return n <= 1 ? 1 : n * factorial(n-1);
+  if (!Number.isInteger(n)) return 'error - not an integer';
+  if (n < 0) return 'error - not a positive integer';
+  return n <= 1 ? 1 : n * factorial(n - 1);
 }
