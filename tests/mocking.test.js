@@ -118,24 +118,24 @@ describe('submitOrder', () => {
 });
 
 describe('signUp', () => {
+    /* NOT NECESSARY because we added auto mock clearing to vitest.config.js
+    beforeEach(() => {
+        vi.mocked(sendEmail).mockClear;
+    }); */
+
     const email = 'name@domain.com';
-    let callCount = 0;
     let args = [];
     it('should return false if email is not valid', async () => {
         signUp(null).then(result => expect(result).toBe(false));
-        callCount = callCount;
     });
     it('should return true if email is valid', async () => {
         signUp(email).then(result => expect(result).toBe(true));
-        callCount++;
     });
     it('should send welcome email if email is valid', async () => {
         await signUp(email);
-        callCount++;
+        args = vi.mocked(sendEmail).mock.calls[0];
 
-        args = vi.mocked(sendEmail).mock.calls[callCount - 1];
-
-        expect(sendEmail).toHaveBeenCalledTimes(callCount);
+        expect(sendEmail).toHaveBeenCalled();
         expect(args[0]).toBe(email);
         expect(args[1]).toMatch(/welcome/i);
     });
@@ -147,7 +147,7 @@ describe('login', () => {
         const spy = vi.spyOn(security, 'generateCode');
 
         await login(email);
-        
+
         const securityCode = spy.mock.results[0].value.toString();
         
         expect(sendEmail).toHaveBeenCalledWith(email, securityCode);
