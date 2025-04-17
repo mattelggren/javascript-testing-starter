@@ -117,17 +117,24 @@ describe('submitOrder', () => {
 });
 
 describe('signUp', () => {
-    const email ='name@domain.com';
+    const email = 'name@domain.com';
+    let callCount = 0;
+    let args = [];
     it('should return false if email is not valid', async () => {
         signUp(null).then(result => expect(result).toBe(false));
+        callCount = callCount;
     });
     it('should return true if email is valid', async () => {
         signUp(email).then(result => expect(result).toBe(true));
+        callCount++;
     });
     it('should send welcome email if email is valid', async () => {
-        const args = vi.mocked(sendEmail).mock.calls[0];
+        await signUp(email);
+        callCount++;
 
-        expect(sendEmail).toHaveBeenCalled();
+        args = vi.mocked(sendEmail).mock.calls[callCount - 1];
+
+        expect(sendEmail).toHaveBeenCalledTimes(callCount);
         expect(args[0]).toBe(email);
         expect(args[1]).toMatch(/welcome/i);
     });
