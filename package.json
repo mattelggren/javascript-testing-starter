@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "test:nowatch": "vitest --run",
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
     "format": "prettier . --write",
