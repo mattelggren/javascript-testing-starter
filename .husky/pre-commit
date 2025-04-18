@@ -1,1 +1,1 @@
-npm run test:nowatch
+npx lint-staged
