@@ -1,7 +1,7 @@
 // Lesson: Positive and negative testing
 export function calculateDiscount(price: number, discountCode: string) {
   if (price <= 0) {
-    return 'Invalid price';
+    return 'Invalid price'
   }
 
   let discount = 0;
