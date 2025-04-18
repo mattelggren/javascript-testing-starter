@@ -9,7 +9,7 @@ export function getCoupons() {
 // Lesson: Positive and negative testing
 export function calculateDiscount(price, discountCode) {
   if (typeof price !== 'number' || price <= 0) {
-    return 'Invalid price';
+    return 'Invalid price'; //comment
   }
 
   if (typeof discountCode !== 'string') {
