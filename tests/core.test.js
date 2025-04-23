@@ -7,6 +7,7 @@ import {
   fetchData,
   fetchDataFailedPromise,
   isPriceInRange,
+  isStrongPassword,
   isValidUsername,
   Stack,
   validateUserInput,
@@ -208,27 +209,58 @@ describe('Stack', () => {
 });
 
 describe('createProduct', () => {
+  let myProduct;
   it('should return a success object for valid product details', () => {
-    const myProduct = createProduct({ name: 'dasies', price: 20 });
+    myProduct = createProduct({ name: 'dasies', price: 20 });
     expect(myProduct.success).toEqual(true);
     expect(myProduct.message).toMatch(/published/i);
   });
   it('should return an error object for an invalid product argument', () => {
-    const myProduct = createProduct(null);
+    myProduct = createProduct(null);
     expect(myProduct.success).toEqual(false);
     expect(myProduct.error.code).toBe('invalid_argument');
     expect(myProduct.error.message).toMatch(/invalid/i);
   });
   it('should return an error object for an invalid product name', () => {
-    const myProduct = createProduct({ name: '', price: 20 });
+    myProduct = createProduct({ name: '', price: 20 });
     expect(myProduct.success).toEqual(false);
     expect(myProduct.error.code).toBe('invalid_name');
     expect(myProduct.error.message).toMatch(/missing/i);
   });
   it('should return an error object for an invalid product price', () => {
-    const myProduct = createProduct({ name: 'daisies', price: 0 });
+    myProduct = createProduct({ name: 'daisies', price: 0 });
     expect(myProduct.success).toEqual(false);
     expect(myProduct.error.code).toBe('invalid_price');
     expect(myProduct.error.message).toMatch(/missing/i);
+  });
+});
+
+describe('isStrongPassword', () => {
+  const minLength = 8;
+  const maxLength = 32;
+  const validPasswordMin = 'aA11'.repeat(2);
+  const validPasswordMax = 'aA11'.repeat(4);
+  it('should return false if password is less the min length', () => {
+    expect(isStrongPassword('a'.repeat(minLength - 1))).toBe(false);
+  });
+  it('should return false if the password is greater than the max length', () => {
+    expect(isStrongPassword('a'.repeat(maxLength + 1))).toBe(false);
+  });
+  it('should return false if the password does not contain at least one upper-case character', () => {
+    expect(isStrongPassword(validPasswordMin.toLowerCase())).toBe(false);
+  });
+  it('should return false if the password does not contain at least one lower-case character', () => {
+    expect(isStrongPassword(validPasswordMin.toUpperCase())).toBe(false);
+  });
+  it('should return false if the password does not contain at least one digit', () => {
+    expect(isStrongPassword(validPasswordMin.replace(/[0-9]/g, 'a'))).toBe(
+      false,
+    );
+  });
+  it('should return true if the password meets all criteria for being strong (minLength)', () => {
+    expect(isStrongPassword(validPasswordMin)).toBe(true);
+  });
+  it('should return true if the password meets all criteria for being strong (maxLength)', () => {
+    expect(isStrongPassword(validPasswordMax)).toBe(true);
   });
 });

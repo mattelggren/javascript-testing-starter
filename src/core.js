@@ -154,8 +154,15 @@ export function createProduct(product) {
 }
 
 export function isStrongPassword(password) {
+  const minLength = 8;
+  const maxLength = 32;
   // Check the length of the password (minimum 8 characters)
-  if (password.length < 8) {
+  if (password.length < minLength) {
+    return false;
+  }
+
+  // Check the length of the password (maximum 32 characters)
+  if (password.length > maxLength) {
     return false;
   }
 
