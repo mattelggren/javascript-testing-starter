@@ -2,6 +2,7 @@ import { it, expect, describe, beforeEach } from 'vitest';
 import {
   calculateDiscount,
   canDrive,
+  createProduct,
   getCoupons,
   fetchData,
   fetchDataFailedPromise,
@@ -203,5 +204,31 @@ describe('Stack', () => {
     expect(stack.size()).toBe(3);
     stack.clear();
     expect(stack.size()).toBe(0);
+  });
+});
+
+describe('createProduct', () => {
+  it('should return a success object for valid product details', () => {
+    const myProduct = createProduct({ name: 'dasies', price: 20 });
+    expect(myProduct.success).toEqual(true);
+    expect(myProduct.message).toMatch(/published/i);
+  });
+  it('should return an error object for an invalid product argument', () => {
+    const myProduct = createProduct(null);
+    expect(myProduct.success).toEqual(false);
+    expect(myProduct.error.code).toBe('invalid_argument');
+    expect(myProduct.error.message).toMatch(/invalid/i);
+  });
+  it('should return an error object for an invalid product name', () => {
+    const myProduct = createProduct({ name: '', price: 20 });
+    expect(myProduct.success).toEqual(false);
+    expect(myProduct.error.code).toBe('invalid_name');
+    expect(myProduct.error.message).toMatch(/missing/i);
+  });
+  it('should return an error object for an invalid product price', () => {
+    const myProduct = createProduct({ name: 'daisies', price: 0 });
+    expect(myProduct.success).toEqual(false);
+    expect(myProduct.error.code).toBe('invalid_price');
+    expect(myProduct.error.message).toMatch(/missing/i);
   });
 });

@@ -129,6 +129,15 @@ export class Stack {
 
 // Additional exercises
 export function createProduct(product) {
+  if (!product)
+    return {
+      success: false,
+      error: {
+        code: 'invalid_argument',
+        message: 'Invalid product object',
+      },
+    };
+
   if (!product.name)
     return {
       success: false,
