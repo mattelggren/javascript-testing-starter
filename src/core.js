@@ -156,6 +156,7 @@ export function createProduct(product) {
 export function isStrongPassword(password) {
   const minLength = 8;
   const maxLength = 32;
+  const allowedSymbols = /[@.#$!%*?&]/;
   // Check the length of the password (minimum 8 characters)
   if (password.length < minLength) {
     return false;
@@ -178,6 +179,11 @@ export function isStrongPassword(password) {
 
   // Check if the password contains at least one digit (number)
   if (!/\d/.test(password)) {
+    return false;
+  }
+
+  // Check if the password contains at least one allowed symbol
+  if (!allowedSymbols.test(password)) {
     return false;
   }
 

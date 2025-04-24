@@ -236,26 +236,32 @@ describe('createProduct', () => {
 });
 
 describe('isStrongPassword', () => {
-  const minLength = 8;
-  const maxLength = 32;
-  const validPasswordMin = 'aA11'.repeat(2);
-  const validPasswordMax = 'aA11'.repeat(4);
+  const validPasswordMin = 'aA01$#.?'; // min is 8
+  const validPasswordMid = validPasswordMin.repeat(2);
+  const validPasswordMax = validPasswordMin.repeat(4); // max is 32
+  const allowedSymbols = /[@.#$!%*?&]/g; // plus g for removing any instances
+
   it('should return false if password is less the min length', () => {
-    expect(isStrongPassword('a'.repeat(minLength - 1))).toBe(false);
+    expect(isStrongPassword(validPasswordMin.replace('a', ''))).toBe(false);
   });
   it('should return false if the password is greater than the max length', () => {
-    expect(isStrongPassword('a'.repeat(maxLength + 1))).toBe(false);
+    expect(isStrongPassword(validPasswordMax + 'a')).toBe(false);
   });
   it('should return false if the password does not contain at least one upper-case character', () => {
-    expect(isStrongPassword(validPasswordMin.toLowerCase())).toBe(false);
+    expect(isStrongPassword(validPasswordMid.toLowerCase())).toBe(false);
   });
   it('should return false if the password does not contain at least one lower-case character', () => {
-    expect(isStrongPassword(validPasswordMin.toUpperCase())).toBe(false);
+    expect(isStrongPassword(validPasswordMid.toUpperCase())).toBe(false);
   });
   it('should return false if the password does not contain at least one digit', () => {
-    expect(isStrongPassword(validPasswordMin.replace(/[0-9]/g, 'a'))).toBe(
+    expect(isStrongPassword(validPasswordMid.replace(/[0-9]/g, 'a'))).toBe(
       false,
     );
+  });
+  it('should return false if the password does not contain at least one allowed symbol', () => {
+    expect(
+      isStrongPassword(validPasswordMid.replace(allowedSymbols, 'a')),
+    ).toBe(false);
   });
   it('should return true if the password meets all criteria for being strong (minLength)', () => {
     expect(isStrongPassword(validPasswordMin)).toBe(true);
